@@ -1,0 +1,26 @@
+.hidden {
+	display: none;
+}
+
+html, body { width: 100%; height:100%; margin: 0;}
+
+canvas {
+    padding-left: 0;
+    padding-right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+}
+
+.scrollBox {
+	height: 45px;
+	width: 200px;
+	border: 1px solid #ccc;
+	font: 16px/26px Georgia, Garamond, Serif;
+	overflow: auto;
+}
+
+.keyPart {
+	width: 100vh;
+	margin: auto;
+}
