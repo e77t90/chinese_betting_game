@@ -4,6 +4,10 @@ $(document).ready(function(){
 
 //initial setup function
 function init() {
+  loadBGMid();
+  loadBGTop();
+  loadBGBottom();
+  
   requestServerKey();
   update_bank();
   document.addEventListener('click', mouseClicked, false);
@@ -12,46 +16,43 @@ function init() {
 
 //update function
 function update_bank(){
-  context.fillStyle = "white";
-  context.fillRect(height*3/4, 0, height/4, height/6);
-  context.fillStyle = "black";
-  context.font = "4vh Arial";
-  context.fillText("$" + game.bank, height*3/4 + height/16, height/6 - height/45); 
+  loadBGTop();
 };
 
 function update_dice(){
-  bowl_image.onload();
   
   for (var i=0; i<3; i++) {
     switch (game.randNumber[i]) {
       case 1:
-        diceArray[i].src = 'img/b1.png'
+        diceArray[i].src = 'img/dice_1.png'
         break;
       case 2:
-        diceArray[i].src = 'img/b2.png'
+        diceArray[i].src = 'img/dice_2.png'
         break;
       case 3:
-        diceArray[i].src = 'img/b3.png'
+        diceArray[i].src = 'img/dice_3.png'
         break;
       case 4:
-        diceArray[i].src = 'img/b4.png'
+        diceArray[i].src = 'img/dice_4.png'
         break;
       case 5:
-        diceArray[i].src = 'img/b5.png'
+        diceArray[i].src = 'img/dice_5.png'
         break;
       case 6:
-        diceArray[i].src = 'img/b6.png'
+        diceArray[i].src = 'img/dice_6.png'
         break;
       default:
         break;
     }
   }
+
+  make_dice();
 }
 
 function refreshCanvas() {
-  context.fillStyle = "white";
-  context.fillRect(0, height/5, height, height*3/4);
-  make_base();
+  
+  loadBGMid();
+  loadBGTop();
 }
 
 /*
