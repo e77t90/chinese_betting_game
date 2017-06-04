@@ -12,7 +12,8 @@
 		$unhashedServerKey = $text;
 		$hashedServerKey = hash('sha512', $unhashedServerKey);
 
-		$_SESSION['unhashed_key'] = $text;
+		$_SESSION['a'] = [];
+		array_push($_SESSION['a'], $text);
 
 		return $hashedServerKey;
 				
@@ -23,8 +24,7 @@
 			echo genHashedKey();
 			break;
 		case 1:
-			echo $_SESSION['unhashed_key']; 
-			session_unset();
+			echo end($_SESSION['a']); 
 			break;
 		
 		default:

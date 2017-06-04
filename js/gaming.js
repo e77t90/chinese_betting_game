@@ -1,3 +1,5 @@
+var timeout = 3000;
+
 $(document).ready(function(){
   init();
 });
@@ -18,6 +20,11 @@ function init() {
 function update_bank(){
   loadBGTop();
 };
+
+//update bank account when last guess
+function update_bank_last(){
+  loadBGTop_last();
+}
 
 function update_dice(){
   
@@ -71,6 +78,8 @@ var input_numberGuess = [];
 var totalBet = 0;
 
 var hashedServerKey = null;
+
+var lastBankAccount = 500;
 
 var game = {
   //bet: null,
@@ -174,48 +183,96 @@ function requestUnhashedKey(input) {
 
       for(var j=0; j<game.numberGuess.length; j++){
 
-        //handle guess for one numbers
-        console.log("game.numberGuess[j].number = " + game.numberGuess[j].number);
+        if (j == (game.numberGuess.length-1)) {
+          //handle guess for one numbers of last one
+          console.log("game.numberGuess[j].number = " + game.numberGuess[j].number);
 
-        var count = 0;
-        for (var i=0; i<3; i++)
-        {
-          console.log("game.randNumber[i] = " + game.randNumber[i]);
-          if(game.randNumber[i] === game.numberGuess[j].number)
+          var count = 0;
+          for (var i=0; i<3; i++)
           {
-            count++;
+            console.log("game.randNumber[i] = " + game.randNumber[i]);
+            if(game.randNumber[i] === game.numberGuess[j].number)
+            {
+              count++;
+            }
           }
+
+          if(count === 1) {
+            //alert("You got it! you won || 1x Price || of $" + (game.numberGuess[j].bet * 1) + " !" );
+            game.bank = game.bank + game.numberGuess[j].bet + (game.numberGuess[j].bet * 1);
+            console.log(game.bank);
+            update_bank_last();
+          }else if(count === 2) {
+            //alert("You got it! you won || 2x Price || of $" + (game.numberGuess[j].bet * 2) + " !" );
+            game.bank = game.bank + game.numberGuess[j].bet + (game.numberGuess[j].bet * 2);
+            console.log(game.bank);
+            update_bank_last();
+          }else if(count === 3) {
+            //alert("You got it! you won || 3x price || of $" + (game.numberGuess[j].bet * 3) + " !" );
+            game.bank = game.bank + game.numberGuess[j].bet + (game.numberGuess[j].bet * 3);
+            console.log(game.bank);
+            update_bank_last();
+          }else{
+            //alert("Sorry you lost!");
+            console.log(game.bank);
+            update_bank_last();
+          };
+        }else {
+          //handle guess for one numbers
+          console.log("game.numberGuess[j].number = " + game.numberGuess[j].number);
+
+          var count = 0;
+          for (var i=0; i<3; i++)
+          {
+            console.log("game.randNumber[i] = " + game.randNumber[i]);
+            if(game.randNumber[i] === game.numberGuess[j].number)
+            {
+              count++;
+            }
+          }
+
+          if(count === 1) {
+            //alert("You got it! you won || 1x Price || of $" + (game.numberGuess[j].bet * 1) + " !" );
+            game.bank = game.bank + game.numberGuess[j].bet + (game.numberGuess[j].bet * 1);
+            console.log(game.bank);
+            update_bank();
+          }else if(count === 2) {
+            //alert("You got it! you won || 2x Price || of $" + (game.numberGuess[j].bet * 2) + " !" );
+            game.bank = game.bank + game.numberGuess[j].bet + (game.numberGuess[j].bet * 2);
+            console.log(game.bank);
+            update_bank();
+          }else if(count === 3) {
+            //alert("You got it! you won || 3x price || of $" + (game.numberGuess[j].bet * 3) + " !" );
+            game.bank = game.bank + game.numberGuess[j].bet + (game.numberGuess[j].bet * 3);
+            console.log(game.bank);
+            update_bank();
+          }else{
+            //alert("Sorry you lost!");
+            console.log(game.bank);
+            update_bank();
+          };
         }
 
-        if(count === 1) {
-          alert("You got it! you won || 1x Price || of $" + (game.numberGuess[j].bet * 1) + " !" );
-          game.bank = game.bank + game.numberGuess[j].bet + (game.numberGuess[j].bet * 1);
-          console.log(game.bank);
-          update_bank();
-        }else if(count === 2) {
-          alert("You got it! you won || 2x Price || of $" + (game.numberGuess[j].bet * 2) + " !" );
-          game.bank = game.bank + game.numberGuess[j].bet + (game.numberGuess[j].bet * 2);
-          console.log(game.bank);
-          update_bank();
-        }else if(count === 3) {
-          alert("You got it! you won || 3x price || of $" + (game.numberGuess[j].bet * 3) + " !" );
-          game.bank = game.bank + game.numberGuess[j].bet + (game.numberGuess[j].bet * 3);
-          console.log(game.bank);
-          update_bank();
-        }else{
-          alert("Sorry you lost!");
-          console.log(game.bank);
-          update_bank();
-        };
+        
 
       }
-
+        //reset input number guess
         input_numberGuess = [];
-        //refresh the canvas
-        refreshCanvas();
 
-        if(game.bank == 0){alert("you have lost the game!");}
+        setTimeout(function(){
 
+          //reset last bank account variable
+          lastBankAccount = game.bank;
+
+          //refresh the canvas
+          refreshCanvas();
+
+          if(game.bank == 0){alert("you have lost the game!");}
+
+          document.addEventListener('click', mouseClicked, false);
+
+
+        }, timeout);
 
     },
     dataType: "text"
@@ -354,6 +411,21 @@ function mouseClicked(e) {
   if (btn_coin_1000.checkClicked()) {currentCoin = 1000;};
   if (btn_coin_5000.checkClicked()) {currentCoin = 5000;};
   
+}
+
+function changeBettedImage(index) {
+  input_numberGuess.forEach
+  switch(index+1) {
+    case 1:
+      b1_image.src = 'img/b1_betted.png';
+      //b1_image.style.border = "thin solid red"; 
+      b1_image.onload = function(){
+        context.drawImage(b1_image, 0, height/4, height/4, height/4);
+      };
+      break;
+    default:
+      break;
+  }
 }
 
 //action preformed when "下注" is pressed

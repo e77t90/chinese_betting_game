@@ -28,6 +28,254 @@ dice3_image = new Image();
 dice3_image.src = 'img/dice_3.png';
 diceArray = [dice1_image, dice2_image, dice3_image];
 
+function loadBGTop_last() {
+  document.removeEventListener('click', mouseClicked, false);
+
+  bg_top = new Image();
+  bg_top.src = 'img/bg_top.png';
+  //b1_image.style.border = "thin solid red"; 
+  bg_top.onload = function(){
+    context.drawImage(bg_top, 0, 0, height, height/4 - height/24);
+
+    //Draw bank account on canvas
+    context.fillStyle = "black";
+    context.font = "35px Arial";
+    context.fillText("$" + game.bank, height*3/4 + height/16, height/6 - height/45); 
+
+    //Draw the change in bank on canvas
+    var changeInBank = game.bank - lastBankAccount;
+    drawChangeInBank(changeInBank);
+
+    //draw the undo button
+    context.fillStyle = "#00bcd4";
+    context.fillRect(0, 0, height/7, height/8);
+    context.fillStyle = "black";
+    context.font = "30px 微軟正黑體";
+    context.fillText("重設", height/40, height/8 - height/23); 
+
+    make_base_top();
+
+    console.log("game.numberGuess = " + JSON.stringify(game.numberGuess));
+
+    var bettedNumber = [];
+    function bettedNumberIncluded(n){
+      var found = false;
+      for (var i = 0; i < bettedNumber.length; i++) {
+        if (bettedNumber[i].number == n) {
+          found = true;
+          break;
+        }
+      }
+      return found;
+    }
+
+    for (var i = 0; i < game.numberGuess.length; i++) {
+      if (!bettedNumberIncluded(game.numberGuess[i].number)) {
+        bettedNumber.push({"number": game.numberGuess[i].number});
+      }
+    }
+    console.log("bettedNumber = " + JSON.stringify(bettedNumber));
+
+    for (var i = 0; i < bettedNumber.length; i++) {
+      bettedNumber[i].winCount = 0;
+      for (var j = 0; j < game.randNumber.length; j++) {
+
+        if (bettedNumber[i].number == game.randNumber[j]) {
+          bettedNumber[i].winCount = bettedNumber[i].winCount + 1;
+        }
+      }
+    }
+    console.log("bettedNumber = " + JSON.stringify(bettedNumber));
+    for (var i = 0; i < bettedNumber.length; i++) {
+      switch(bettedNumber[i].number) {
+        case 1:
+          if (bettedNumber[i].winCount == 0) {
+            lose_image_1 = new Image();
+            lose_image_1.src = 'img/b1_lose.png';
+            lose_image_1.onload = function(){
+              context.drawImage(lose_image_1, 0, height/4, height/4, height/4);
+            };
+          }else {
+
+            loadImages(sources, function(images) {
+              var timer = 0;
+              function switch_win_1() {
+                context.drawImage(images.b1_win, 0, height/4, height/4, height/4);
+                timer += 500;
+                if(timer < timeout){
+                  setTimeout(switch_normal_1,500);
+                }    
+                console.log("switch_win_1 execute");
+              }
+              function switch_normal_1() {
+                context.drawImage(images.b1, 0, height/4, height/4, height/4);
+                timer += 500;
+                if(timer < timeout){
+                  setTimeout(switch_win_1,500);
+                }
+                console.log("switch_normal_1 execute");
+              }
+              switch_normal_1();
+
+            });
+          }
+          break;
+        case 2:
+          if (bettedNumber[i].winCount == 0) {
+            lose_image_2 = new Image();
+            lose_image_2.src = 'img/b2_lose.png';
+            lose_image_2.onload = function(){
+              context.drawImage(lose_image_2, 0, height/2, height/4, height/4);
+            };
+          }else {
+
+            loadImages(sources, function(images) {
+              var timer = 0;
+              function switch_win_2() {
+                context.drawImage(images.b2_win, 0, height/2, height/4, height/4);
+                timer += 500;
+                if(timer < timeout){
+                  setTimeout(switch_normal_2,500);
+                }    
+              }
+              function switch_normal_2() {
+                context.drawImage(images.b2, 0, height/2, height/4, height/4);
+                timer += 500;
+                if(timer < timeout){
+                  setTimeout(switch_win_2,500);
+                }
+              }
+              switch_normal_2();
+
+            });
+          }
+          break;
+        case 3:
+          if (bettedNumber[i].winCount == 0) {
+            lose_image_3 = new Image();
+            lose_image_3.src = 'img/b3_lose.png';
+            lose_image_3.onload = function(){
+              context.drawImage(lose_image_3, height/4, height/2, height/4, height/4);
+            };
+          }else {
+
+            loadImages(sources, function(images) {
+              var timer = 0;
+              function switch_win_3() {
+                context.drawImage(images.b3_win, height/4, height/2, height/4, height/4);
+                timer += 500;
+                if(timer < timeout){
+                  setTimeout(switch_normal_3,500);
+                }    
+              }
+              function switch_normal_3() {
+                context.drawImage(images.b3, height/4, height/2, height/4, height/4);
+                timer += 500;
+                if(timer < timeout){
+                  setTimeout(switch_win_3,500);
+                }
+              }
+              switch_normal_3();
+
+            });
+          }
+          break;
+        case 4:
+          if (bettedNumber[i].winCount == 0) {
+            lose_image_4 = new Image();
+            lose_image_4.src = 'img/b4_lose.png';
+            lose_image_4.onload = function(){
+              context.drawImage(lose_image_4, height/2, height/2, height/4, height/4);
+            };
+          }else {
+
+            loadImages(sources, function(images) {
+              var timer = 0;
+              function switch_win_4() {
+                context.drawImage(images.b4_win, height/2, height/2, height/4, height/4);
+                timer += 500;
+                if(timer < timeout){
+                  setTimeout(switch_normal_4,500);
+                }    
+              }
+              function switch_normal_4() {
+                context.drawImage(images.b4, height/2, height/2, height/4, height/4);
+                timer += 500;
+                if(timer < timeout){
+                  setTimeout(switch_win_4,500);
+                }
+              }
+              switch_normal_4();
+
+            });
+          }
+          break;
+        case 5:
+          if (bettedNumber[i].winCount == 0) {
+            lose_image_5 = new Image();
+            lose_image_5.src = 'img/b5_lose.png';
+            lose_image_5.onload = function(){
+              context.drawImage(lose_image_5, height*3/4, height/2, height/4, height/4);
+            };
+          }else {
+
+            loadImages(sources, function(images) {
+              var timer = 0;
+              function switch_win_5() {
+                context.drawImage(images.b5_win, height*3/4, height/2, height/4, height/4);
+                timer += 500;
+                if(timer < timeout){
+                  setTimeout(switch_normal_5,500);
+                }    
+              }
+              function switch_normal_5() {
+                context.drawImage(images.b5, height*3/4, height/2, height/4, height/4);
+                timer += 500;
+                if(timer < timeout){
+                  setTimeout(switch_win_5,500);
+                }
+              }
+              switch_normal_5();
+
+            });
+          }
+          break;
+        case 6:
+          if (bettedNumber[i].winCount == 0) {
+            lose_image_6 = new Image();
+            lose_image_6.src = 'img/b6_lose.png';
+            lose_image_6.onload = function(){
+              context.drawImage(lose_image_6, height*3/4, height/4, height/4, height/4);
+            };
+          }else {
+
+            loadImages(sources, function(images) {
+              var timer = 0;
+              function switch_win_6() {
+                context.drawImage(images.b6_win, height*3/4, height/4, height/4, height/4);
+                timer += 500;
+                if(timer < timeout){
+                  setTimeout(switch_normal_6,500);
+                }    
+              }
+              function switch_normal_6() {
+                context.drawImage(images.b6, height*3/4, height/4, height/4, height/4);
+                timer += 500;
+                if(timer < timeout){
+                  setTimeout(switch_win_6,500);
+                }
+              }
+              switch_normal_6();
+
+            });
+          }
+          break;          
+      }
+    }
+    
+  };
+}
+
 function loadBGTop() {
   bg_top = new Image();
   bg_top.src = 'img/bg_top.png';
@@ -192,7 +440,7 @@ function make_dice()
   bowl_image.src = 'img/bowl.png';
 
   bowl_image.onload = function(){
-    console.log("oh, the bowl image onload function is fired");
+    //console.log("oh, the bowl image onload function is fired");
 
     context.drawImage(bowl_image, height/4, 0, height/2, height/5);
     /*
@@ -220,11 +468,22 @@ function make_dice()
 
 }
 
-//loading dice image function
-function load_dice_1() {
+function drawChangeInBank(changeInBank) {
+
+  var changeToDisplay ="";
+  //console.log("displaying change in bank");
+
+  context.fillStyle = "red";
+  context.font = "35px Arial";
+  if (changeInBank > 0) {
+    changeToDisplay = "+" + "$" + Math.abs(changeInBank).toString();
+  }else if (changeInBank < 0) {
+    changeToDisplay = "-" + "$" + Math.abs(changeInBank).toString();
+  }
+  context.fillText(changeToDisplay, height*3/4 + height/16, height/6 - height/12); 
+
 
 }
-
 
 //document.getElementById('keyPart').style.width = "100px";
 
@@ -237,3 +496,40 @@ function copyToClipboard(element) {
 }
 
 $('.keyPart').width($(window).height());
+
+//preload win image
+function loadImages(sources, callback) {
+  var images = {};
+  var loadedImages = 0;
+  var numImages = 0;
+  // get num of sources
+  for(var src in sources) {
+    numImages++;
+  }
+  for(var src in sources) {
+    images[src] = new Image();
+    images[src].onload = function() {
+      if(++loadedImages >= numImages) {
+        callback(images);
+      }
+    };
+    images[src].src = sources[src];
+  }
+}
+
+var sources = {
+
+  b1_win: 'img/b1_win.png',
+  b1: 'img/b1.png',
+  b2_win: 'img/b2_win.png',
+  b2: 'img/b2.png',
+  b3_win: 'img/b3_win.png',
+  b3: 'img/b3.png',
+  b4_win: 'img/b4_win.png',
+  b4: 'img/b4.png',
+  b5_win: 'img/b5_win.png',
+  b5: 'img/b5.png',
+  b6_win: 'img/b6_win.png',
+  b6: 'img/b6.png'
+
+};
